@@ -1,44 +1,46 @@
-node {
-   def mvnHome = tool 'M3'
-
-   stage('Checkout Code') { 
-      git 'https://github.com/maping/java-maven-calculator-web-app.git'
-   }
-   stage('JUnit Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' clean test"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" clean test/)
-      }
-   }
-   stage('Integration Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' integration-test"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" integration-test/)
-      }
-   }
- /*
-   stage('Performance Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' cargo:start verify cargo:stop"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" cargo:start verify cargo:stop/)
-      }
-   }
-  */
-  stage('Performance Test') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' verify"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" verify/)
-      }
-   }
-   stage('Deploy') {
-      timeout(time: 10, unit: 'MINUTES') {
-           input message: 'Deploy this web app to production ?'
-      }
-      echo 'Deploy...'
-   }
+pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 120, unit: 'MINUTES')
+    }
+    agent {
+        label 'OpenJDK8'
+    }
+    tools {
+        maven "Maven 3.3"
+        jdk "OpenJDK 1.8"
+    }
+    // Environment variables
+    environment {
+    }
+    stages {
+        stage ('Run Package') {
+            steps {
+                script {
+                    sh "mvn clean package -Dmaven.test.skip=true"
+                    }
+                }
+            }
+        stage ('Run Tests') {
+            steps {
+                echo "Running sonar test"
+                script {
+                    sh "mvn clean test"
+                    sh "mvn clean integration-test"
+                }
+            }
+        }
+        //stage ('Run Sonar') {
+        //    steps {
+        //        echo "Running sonar test"
+        //        script {
+        //            SONAR_OPTS = "-Dmaven.test.failure.ignore=true --fail-never -Dsonar.branch.name=${branchName} " +
+        //                    "-Dsonar.language=java -Dsonar.exclusions=**/gen/**,**/src/main/java/gov/niem/**," +
+        //                    "**/src/main/java/gov/hhs/cms/ffe/irsreporting/domain/irs/**," +
+        //                    "-Dsonar.projectKey=gov.hhs.cms.ffe.batch:EE-batch-apps-parent," +
+        //                    "**/webapp/js/*.js,**/*.min.js,**/webapp/test/**/*.js,**/webapp/js/lang/*.js"
+        //
+        //            sh "mvn -P default,sonar7 sonar:sonar ${SONAR_OPTS}"
+        //        }
+        }
 }
-   
