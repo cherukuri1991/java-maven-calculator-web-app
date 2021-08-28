@@ -23,10 +23,17 @@ pipeline {
             }
         stage ('Run Tests') {
             steps {
-                echo "Running sonar test"
+                echo "Running test"
                 script {
                     sh "mvn clean test"
                     sh "mvn clean integration-test"
+                }
+            }
+        }
+        stage ('Build Image') {
+            steps {
+                script {
+                    sh "cd ${WORKSPACE} && docker build ."
                 }
             }
         }
