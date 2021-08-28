@@ -11,8 +11,8 @@ pipeline {
         jdk "OpenJDK 1.8"
     }
     // Environment variables
-    environment {
-    }
+    //environment {
+    //}
     stages {
         stage ('Run Package') {
             steps {
