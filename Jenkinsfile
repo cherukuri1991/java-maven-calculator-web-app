@@ -19,7 +19,7 @@ pipeline {
                 script {
                     sh "mvn clean package -Dmaven.test.skip=true"
                     //sh "mvn clean deploy -Dmaven.test.skip=true"
-                    sh "mvn jetty:run"
+                    //sh "mvn jetty:run"
                     }
                 }
             }
