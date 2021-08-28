@@ -11,13 +11,15 @@ pipeline {
         jdk "OpenJDK 1.8"
     }
     // Environment variables
-    environment {
-    }
+    //environment {
+    //}
     stages {
         stage ('Run Package') {
             steps {
                 script {
                     sh "mvn clean package -Dmaven.test.skip=true"
+                    //sh "mvn clean deploy -Dmaven.test.skip=true"
+                    //sh "mvn jetty:run"
                     }
                 }
             }
@@ -27,6 +29,7 @@ pipeline {
                 script {
                     sh "mvn clean test"
                     sh "mvn clean integration-test"
+                    sh " mvn clean verify"
                 }
             }
         }
