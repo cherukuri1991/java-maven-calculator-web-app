@@ -36,7 +36,7 @@ pipeline {
         stage ('Build Image') {
             steps {
                 script {
-                    sh "cd ${WORKSPACE} && podman build ."
+                    sh "cd ${WORKSPACE} && sudo podman build ."
                 }
             }
         }
