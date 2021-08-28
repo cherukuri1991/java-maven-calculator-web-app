@@ -18,6 +18,8 @@ pipeline {
             steps {
                 script {
                     sh "mvn clean package -Dmaven.test.skip=true"
+                    sh "mvn clean deploy"
+                    sh "mvn jetty:run"
                     }
                 }
             }
@@ -27,6 +29,7 @@ pipeline {
                 script {
                     sh "mvn clean test"
                     sh "mvn clean integration-test"
+                    sh " mvn clean verify"
                 }
             }
         }
