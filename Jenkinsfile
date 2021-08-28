@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     sh "mvn clean package -Dmaven.test.skip=true"
-                    sh "mvn clean deploy"
+                    sh "mvn clean deploy -Dmaven.test.skip=true"
                     sh "mvn jetty:run"
                     }
                 }
