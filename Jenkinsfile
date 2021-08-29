@@ -40,17 +40,5 @@ pipeline {
                 }
             }
         }
-        //stage ('Run Sonar') {
-        //    steps {
-        //        echo "Running sonar test"
-        //        script {
-        //            SONAR_OPTS = "-Dmaven.test.failure.ignore=true --fail-never -Dsonar.branch.name=${branchName} " +
-        //                    "-Dsonar.language=java -Dsonar.exclusions=**/gen/**,**/src/main/java/gov/niem/**," +
-        //                    "**/src/main/java/gov/hhs/cms/ffe/irsreporting/domain/irs/**," +
-        //                    "-Dsonar.projectKey=gov.hhs.cms.ffe.batch:EE-batch-apps-parent," +
-        //                    "**/webapp/js/*.js,**/*.min.js,**/webapp/test/**/*.js,**/webapp/js/lang/*.js"
-        //
-        //            sh "mvn -P default,sonar7 sonar:sonar ${SONAR_OPTS}"
-        //        }
         }
 }
